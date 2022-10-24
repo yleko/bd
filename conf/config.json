@@ -1,0 +1,52 @@
+{
+    "inbounds": 
+    [
+        {
+            "listen": "/etc/caddy/vmess","protocol": "vmess",
+            "settings": {"clients": [{"id": "754ca062-a341-4378-8b8c-ceb76d755c6c"}]},
+            "streamSettings": {"network": "ws","wsSettings": {"path": "/754ca062-a341-4378-8b8c-ceb76d755c6c-vmess"}}
+        },
+        {
+            "listen": "/etc/caddy/vless","protocol": "vless",
+            "settings": {"clients": [{"id": "754ca062-a341-4378-8b8c-ceb76d755c6c"}],"decryption": "none"},
+            "streamSettings": {"network": "ws","wsSettings": {"path": "/754ca062-a341-4378-8b8c-ceb76d755c6c-vless"}}
+        },
+        {
+            "listen": "/etc/caddy/trojan","protocol": "trojan",
+            "settings": {"clients": [{"password":"754ca062-a341-4378-8b8c-ceb76d755c6c"}]},
+            "streamSettings": {"network": "ws","wsSettings": {"path": "/754ca062-a341-4378-8b8c-ceb76d755c6c-trojan"}}
+        },
+        {
+            "port": 4234,"listen": "127.0.0.1","tag": "onetag","protocol": "dokodemo-door",
+            "settings": {"address": "v1.mux.cool","network": "tcp","followRedirect": false},
+            "streamSettings": {"security": "none","network": "ws","wsSettings": {"path": "/754ca062-a341-4378-8b8c-ceb76d755c6c-ss"}}
+        },
+        {
+            "port": 4324,"listen": "127.0.0.1","protocol": "shadowsocks",
+            "settings": {"method": "chacha20-ietf-poly1305","password": "754ca062-a341-4378-8b8c-ceb76d755c6c"},
+            "streamSettings": {"security": "none","network": "domainsocket","dsSettings": {"path": "apath","abstract": true}}
+        },
+        {   "port": 5234,"listen": "127.0.0.1","protocol": "socks",
+            "settings": {"auth": "password","accounts": [{"user": "754ca062-a341-4378-8b8c-ceb76d755c6c","pass": "754ca062-a341-4378-8b8c-ceb76d755c6c"}]},
+            "streamSettings": {"network": "ws","wsSettings": {"path": "/754ca062-a341-4378-8b8c-ceb76d755c6c-socks"}}
+        }
+    ],
+    
+    "outbounds": 
+    [
+        {"protocol": "freedom","tag": "direct","settings": {}},
+        {"protocol": "blackhole","tag": "blocked","settings": {}},
+        {"protocol": "socks","tag": "sockstor","settings": {"servers": [{"address": "127.0.0.1","port": 9050}]}},
+        {"protocol": "freedom","tag": "twotag","streamSettings": {"network": "domainsocket","dsSettings": {"path": "apath","abstract": true}}}    
+    ],
+    
+    "routing": 
+    {
+        "rules": 
+        [
+            {"type": "field","inboundTag": ["onetag"],"outboundTag": "twotag"},
+            {"type": "field","outboundTag": "sockstor","domain": ["geosite:tor"]},
+            {"type": "field","outboundTag": "blocked","domain": ["geosite:category-ads-all"]}
+        ]
+    }
+}
