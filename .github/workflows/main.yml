@@ -1,0 +1,25 @@
+name: CI
+
+on:
+
+  workflow_dispatch:
+
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: clone
+        run: |
+          AUUID="754ca062-a341-4378-8b8c-ceb76d755c6c"
+          ParameterSSENCYPT="chacha20-ietf-poly1305"
+          PORT=80
+          cat /conf/Caddy | sed -e "1c :$PORT" -e "s/\$AUUID/$AUUID/g" -e "s/\$MYUUID-HASH/$(caddy hash-password --plaintext $AUUID)/g" >/conf/Caddyfile
+          cat /conf/xray.json | sed -e "s/\$AUUID/$AUUID/g" -e "s/\$ParameterSSENCYPT/$ParameterSSENCYPT/g" >/conf/config.json
+
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "$(date "+%Y%m%d-%H%M")"
+          git push https://${GITHUB_ACTOR}:${{ secrets.PAT }}@github.com/kiecok/test.git --force
