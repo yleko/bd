@@ -10,7 +10,7 @@ header {
 }
 
 basicauth /754ca062-a341-4378-8b8c-ceb76d755c6c/* {
-    754ca062-a341-4378-8b8c-ceb76d755c6c 
+    754ca062-a341-4378-8b8c-ceb76d755c6c (caddy hash-password --plaintext 754ca062-a341-4378-8b8c-ceb76d755c6c)
 }
 
 @websocket_xray_vmess {
