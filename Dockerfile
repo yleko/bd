@@ -18,7 +18,7 @@ RUN set -ex \
 	#&& chmod +x /usr/bin/caddy \
 	&& chmod +x /usr/bin/entrypoint.sh 		
 
-COPY conf/Caddyfile /etc/caddy/Caddyfile
-COPY conf/config.json /etc/xray/config.json
+COPY conf/Caddy /etc/caddy/Caddy
+COPY conf/xray.json /etc/xray/xray.json
 
 CMD ["/usr/bin/entrypoint.sh"]
