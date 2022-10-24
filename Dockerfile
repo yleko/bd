@@ -10,7 +10,6 @@ RUN xcaddy build latest
 
 COPY --from=xray /tmp/xray /usr/bin 
 COPY entrypoint.sh /usr/bin
-COPY conf/ /conf/
 
 RUN set -ex \
 	&& mkdir -p /etc/caddy/ /etc/xray \
@@ -18,5 +17,8 @@ RUN set -ex \
 	#&& chmod +x /usr/bin/xray \
 	#&& chmod +x /usr/bin/caddy \
 	&& chmod +x /usr/bin/entrypoint.sh 		
+
+COPY conf/Caddyfile /etc/caddy/Caddyfile
+COPY conf/config.json /etc/xray/config.json
 
 CMD ["/usr/bin/entrypoint.sh"]
